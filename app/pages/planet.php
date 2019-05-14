@@ -15,13 +15,13 @@ function search($name, $page = 1)
     $offset = $limit * ($page - 1);
 
     if (!empty($name)) {
-        $results = $database->select("SELECT 
+        $results = $database->select('SELECT 
                                         id, name, region, sector, system, inhabitant, city
                                      FROM 
                                         planets
                                      WHERE 
-                                        name LIKE \"%$name%\"
-                                     LIMIT $limit offset $offset");
+                                        name LIKE "%'.$database->clean($name).'%"
+                                     LIMIT $limit offset $offset');
         return $results;
     } else {
         return array();
@@ -55,9 +55,9 @@ function index($page = 1)
 function save($name, $region, $sector, $system, $inhabitant, $city) {
     global $database;
 
-    $result = $database->exec("INSERT INTO 
+    $result = $database->exec('INSERT INTO 
                                 planets (name, region, sector, system, inhabitant, city) 
-                                VALUES(\"$name\", \"$region\", \"$sector\", \"$system\", \"$inhabitant\", \"$city\")");
+                                VALUES("'.$database->clean($name).'", "'.$database->clean($region).'", "'.$database->clean($sector).'", "'.$database->clean($system).'", "'.$database->clean($inhabitant).'", "'.$database->clean($city).'")');
 
     return $result;
 }
@@ -70,12 +70,12 @@ function getPlanet($id)
 {
     global $database;
 
-    $result = $database->select("SELECT 
+    $result = $database->select('SELECT 
                                     id, name, region, sector, system, inhabitant, city
                                  FROM 
                                     planets
                                  WHERE 
-                                    id = $id");
+                                    id = '.$database->clean($id));
     return $result;
 }
 
@@ -84,17 +84,17 @@ function getPlanet($id)
  */
 function updatePlanet($id, $name, $region, $sector, $system, $inhabitant, $city) {
     global $database;
-    $result = $database->exec("UPDATE 
+    $result = $database->exec('UPDATE 
                                     planets
                                SET 
-                                    name = \"$name\",
-                                    region = \"$region\",
-                                    sector = \"$sector\",
-                                    system = \"$system\",
-                                    inhabitant = \"$inhabitant\",
-                                    city = \"$city\"
+                                    name = "'.$database->clean($name).'",
+                                    region = "'.$database->clean($region).'",
+                                    sector = "'.$database->clean($sector).'",
+                                    system = "'.$database->clean($system).'",
+                                    inhabitant = "'.$database->clean($inhabitant).'",
+                                    city = "'.$database->clean($city).'"
                                WHERE
-                                    id = $id");
+                                    id = '.$database->clean($id));
     return $result;
 }
 

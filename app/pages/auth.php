@@ -14,11 +14,11 @@ function login($username, $password)
     global $database;
 
     $password = md5($password);
-    $result = $database->select("SELECT username, permission, id
+    $result = $database->select('SELECT username, permission, id
                                 FROM 
                                     users
                                 WHERE 
-                                    username = \"$username\" and password = \"$password\"");
+                                    username = "'.$username.'" and password = "'.$password.'"');
 
     if (count($result) > 0) {
         $_SESSION['global_id']         = $result[0]["id"];

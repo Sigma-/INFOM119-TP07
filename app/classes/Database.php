@@ -17,5 +17,9 @@ class Database extends SQLite3 {
 
 		return $new_array;
 	}
+
+	function clean($data) {
+	    return htmlentities($data, ENT_QUOTES, "UTF-8");
+    }
 }
 ?>

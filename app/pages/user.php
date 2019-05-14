@@ -27,12 +27,12 @@ function updatePassword($user_id, $new_password1, $new_password2)
     }
 
     if ($photo_yn) {
-        $result = $database->exec("UPDATE users SET password = \"$password\", photo_path = \"$path\" WHERE id = $user_id");
+        $result = $database->exec('UPDATE users SET password = "'.$database->clean($password).'", photo_path = "'.$database->clean($path).'" WHERE id = '.$database->clean($user_id));
     } else {
-        $result = $database->exec("UPDATE users SET password = \"$password\"
+        $result = $database->exec('UPDATE users SET password = "'.$database->clean($password).'"
                                 WHERE 
-                                    id = $user_id
-                                ");
+                                    id = '.$database->clean($user_id)
+                                );
     }
     
     return $result;
@@ -54,19 +54,19 @@ function saveUser($username, $password, $permission)
     if (empty($username) || empty($password) || empty($permission)) return false;
 
     // check if user exists
-    $check = $database->select("SELECT 
+    $check = $database->select('SELECT 
                                     username
                                 FROM
                                     users
                                 WHERE 
-                                    username = \"$username\"");
+                                    username = "'.$database->clean($username).'"');
 
     if (count($check) > 0) {
         return false;
     } else {
-        $result = $database->exec("INSERT INTO 
+        $result = $database->exec('INSERT INTO 
                                     users (username, password, permission) 
-                                    VALUES(\"$username\", \"$password\", \"$permission\")");
+                                    VALUES("'.$database->clean($username).'", "'.$database->clean($password).'", "'.$database->clean($permission).'")');
 
         return $result;
     }
@@ -89,7 +89,7 @@ function delete($user_id)
 {
     global $database;
 
-    $result = $database->exec("DELETE FROM users WHERE id = $user_id");
+    $result = $database->exec('DELETE FROM users WHERE id = '.$database->clean($user_id));
 
     return $result;
 }

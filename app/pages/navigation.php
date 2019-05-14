@@ -8,7 +8,7 @@ function getPlanetNavigation($planet_id)
 {
     global $database;
 
-    $results = $database->select("SELECT 
+    $results = $database->select('SELECT 
                                   d.id as destruction_id,
                                   d.status as status,
                                   d.description as description,
@@ -23,8 +23,8 @@ function getPlanetNavigation($planet_id)
                                   destruction d, planets p
                                 WHERE 
                                   d.planet_id = p.id and
-                                  d.planet_id = $planet_id
-                                ");
+                                  d.planet_id = '.$database->clean($planet_id)
+                                );
     return $results;
 }
 
@@ -35,12 +35,12 @@ function getPlanet($planet_id)
 {
     global $database;
     
-    $result = $database->select("SELECT 
+    $result = $database->select('SELECT 
                                     id, name, region, sector, system, inhabitant, city
                                   FROM 
                                     planets
                                   WHERE
-                                    id = $planet_id");
+                                    id = '.$database->clean($planet_id));
     return $result;
 }
 
@@ -56,7 +56,7 @@ function addNewDestruction($planet_id, $status_id, $description)
     global $database;
 
     $today = date("Y-m-d");
-    $result = $database->exec("INSERT INTO destruction(planet_id, date, status, description) VALUES ($planet_id, \"$today\", $status_id, \"$description\")");
+    $result = $database->exec('INSERT INTO destruction(planet_id, date, status, description) VALUES ('.$database->clean($planet_id).', "'.$today.'", '.$database->clean($status_id).', "'.$database->clean($description).'")');
     return $result;
 }
 
@@ -71,7 +71,7 @@ function updateDestruction($destruction_id, $status_id, $description)
 {
     global $database;
 
-    $result = $database->exec("UPDATE destruction SET status = $status_id, description = \"$description\" WHERE id = $destruction_id");
+    $result = $database->exec('UPDATE destruction SET status = '.$database->clean($status_id).', description = "'.$database->clean($description).'" WHERE id = '.$database->clean($destruction_id));
     
     return $result;
 }
