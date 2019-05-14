@@ -18,7 +18,7 @@ function login($username, $password)
                                 FROM 
                                     users
                                 WHERE 
-                                    username = "'.$username.'" and password = "'.$password.'"');
+                                    username = "'.$database->clean($username).'" and password = "'.$database->clean($password).'"');
 
     if (count($result) > 0) {
         $_SESSION['global_id']         = $result[0]["id"];
