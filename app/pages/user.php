@@ -19,8 +19,13 @@ function updatePassword($user_id, $new_password1, $new_password2)
     $password = md5($new_password1);
 
     if ($_FILES["photo"]["error"] == UPLOAD_ERR_OK) {
+        $allowed  =  array('gif','png' ,'jpg');
         $tmp_path = $_FILES["photo"]["tmp_name"];
         $name     = $_FILES["photo"]["name"];
+        $ext      = pathinfo($name, PATHINFO_EXTENSION);
+        if(!in_array($ext,$allowed) ) {
+            return false;
+        }
         $path     = $upload_dir . "/" . $name;
         if (move_uploaded_file($tmp_path, $path))
         $photo_yn = true;
